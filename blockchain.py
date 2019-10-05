@@ -41,6 +41,18 @@ def print_blockchain_elements():
         print('Outputting Block')
         print(block)
 
+def verify_chain():
+    block_index = 0
+    is_valid=True
+    for block in blockchain:
+        if block[0] == blockchain[block_index - 1]:
+            is_valid = True
+        else:
+            is_valid = False   
+            break 
+    return is_valid
+ 
+
 
 # Get the first transaction input and add the value to the blockchain
 """
@@ -52,6 +64,7 @@ while True:
     print('Please choose')
     print('1:Add a new transaction value')
     print('2:Output the blockchain blocks')
+    print('h:Manupulate the blockchain')
     print('q:Quit')
     user_choice = get_user_choice()
     if  user_choice=="1":
@@ -60,6 +73,9 @@ while True:
     elif user_choice=="2":
     # Output the blockchain list to the console
          print_blockchain_elements()
+    elif user_choice=="h":
+        if len(blockchain) >= 1:
+            blockchain[0]=2    
     elif user_choice=="q":  
          break   
     else:
