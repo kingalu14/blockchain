@@ -44,16 +44,27 @@ def print_blockchain_elements():
         print('-' * 20)
 
 def verify_chain():
-    # block_index = 0
+    """    
+    block_index = 0
     is_valid=True
-    for block_index in range(len(blockchain)):
+    for block in blockchain:
         if block_index == 0:
+            block_index += 1
             continue
-        elif blockchain[block_index][0] == blockchain[block_index - 1]:
+        elif block[0] == blockchain[block_index - 1]:
             is_valid = True
+            block_index += 1
         else:
             is_valid = False   
+            break 
     return is_valid
+    """
+    for(index,block) in enumurate(blockchain):
+        if index == 0:
+            continue
+        if block['previous_hash'] == hash_block(blockchain[index-1]):
+            return False
+    return True
  
 
 
