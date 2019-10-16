@@ -52,9 +52,12 @@ def add_transaction(recipient, sender=owner, amount=1.0):
         'recipient': recipient,
         'amount': amount
     }
-    open_transactions.append(transaction)
-    participants.add(sender)
-    participants.add(recipient)
+    if verify_transaction(transaction):
+         open_transactions.append(transaction)
+         participants.add(sender)
+         participants.add(recipient)
+         return True
+    return False
 
 
 def mine_block():
@@ -99,6 +102,10 @@ def print_blockchain_elements():
     else:
         print('-' * 20)
 
+def verify_transaction(transaction):
+     sender_balance = get_balance(transaction['sender'])
+     return sender_balance >= transaction['amount']
+
 
 def verify_chain():
     """ Verify the current blockchain and return True if it's valid, False otherwise."""
@@ -108,8 +115,6 @@ def verify_chain():
         if block['previous_hash'] != hash_block(blockchain[index-1]):
             return False
     return True
-
-
 waiting_for_input = True
 
 # A while loop for the user input interface
