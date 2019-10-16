@@ -7,6 +7,7 @@ genesis_block = {
 blockchain = [genesis_block]
 open_transactions = []
 owner = 'Max'
+participants = {'Max'}
 
 def hash_block(block):
     return "-".join([str(block[key]) for key in block])
@@ -36,6 +37,8 @@ def add_transaction(recipient, sender=owner, amount=1.0):
         'amount': amount
     }
     open_transactions.append(transaction)
+    participants.add(sender)
+    participants.add(recipient)
 
 
 def mine_block():
@@ -84,8 +87,9 @@ def verify_chain():
     for(index, block) in enumerate(blockchain):
         if index==0:
             continue
-
-
+        if block['previous_hash'] != hash_block(blockchain[index-1]):
+            return False
+    return True
 
 
 waiting_for_input = True
@@ -97,6 +101,7 @@ while waiting_for_input:
     print('1: Add a new transaction value')
     print('2: Mine new blockchain')
     print('3: Output the blockchain blocks')
+    print('4: Output Participants')
     print('h: Manipulate the chain')
     print('q: Quit')
     user_choice = get_user_choice()
@@ -113,17 +118,22 @@ while waiting_for_input:
     elif user_choice == 'h':
         # Make sure that you don't try to "hack" the blockchain if it's empty
         if len(blockchain) >= 1:
-            blockchain[0] = [2]
+            blockchain[0] = {
+                'previous_hash':'',
+                'index':0,
+                'transaction':[{'sender':'Şebnem','recipient':'Kassim','amount':'100.0'}]
+            }
+
     elif user_choice == 'q':
         # This will lead to the loop to exist because it's running condition becomes False
         waiting_for_input = False
     else:
         print('Input was invalid, please pick a value from the list!')
-    """  if not verify_chain():
+    if not verify_chain():
         print_blockchain_elements()
         print('Invalid blockchain!')
         # Break out of the loop
-        break"""
+        break
 else:
     print('User left!')
 
