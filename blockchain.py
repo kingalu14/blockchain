@@ -1,5 +1,6 @@
 # Initializing our (empty) blockchain list
 blockchain = []
+open_transaction = []
 
 
 def get_last_blockchain_value():
@@ -11,6 +12,9 @@ def get_last_blockchain_value():
 # This function accepts two arguments.
 # One required one (transaction_amount) and one optional one (last_transaction)
 # The optional one is optional because it has a default value => [1]
+
+def mine_block():
+    pass
 
 
 def add_value(transaction_amount, last_transaction=[1]):
