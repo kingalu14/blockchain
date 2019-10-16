@@ -1,4 +1,9 @@
 # Initializing our (empty) blockchain list
+genesis_block = {
+        'previous_hash':'',
+        'index':0,
+        'transaction':[]
+    }
 blockchain = []
 open_transactions = []
 owner = 'Max'
@@ -32,7 +37,19 @@ def add_transaction(recipient, sender=owner, amount=1.0):
 
 
 def mine_block():
-    pass
+    last_block = blockchain[-1]
+    hash_blocked = ''
+    for keys in last_block:
+        value=last_block[keys]
+        hash_blocked = hash_blocked + str(value)
+    print(hash_blocked)
+
+    block = {
+        'previous_hash':'XYZ',
+        'index':len(blockchain),
+        'transaction':open_transactions
+    }
+    blockchain.append(block)
 
 
 def get_transaction_value():
@@ -93,7 +110,8 @@ waiting_for_input = True
 while waiting_for_input:
     print('Please choose')
     print('1: Add a new transaction value')
-    print('2: Output the blockchain blocks')
+    print('2: Mine new blockchain')
+    print('3: Output the blockchain blocks')
     print('h: Manipulate the chain')
     print('q: Quit')
     user_choice = get_user_choice()
@@ -104,6 +122,8 @@ while waiting_for_input:
         add_transaction(recipient, amount=amount)
         print(open_transactions)
     elif user_choice == '2':
+        print_blockchain_elements()
+    elif user_choice == '3':
         print_blockchain_elements()
     elif user_choice == 'h':
         # Make sure that you don't try to "hack" the blockchain if it's empty
