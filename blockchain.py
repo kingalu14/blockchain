@@ -2,7 +2,7 @@
 genesis_block = {
         'previous_hash':'',
         'index':0,
-        'transaction':[]
+        'transactions':[]
     }
 blockchain = [genesis_block]
 open_transactions = []
@@ -11,6 +11,11 @@ participants = {'Max'}
 
 def hash_block(block):
     return "-".join([str(block[key]) for key in block])
+
+def get_balance(participant):
+    tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender']==participant] for block in blockchain]
+    return tx_sender
+
 
 def get_last_blockchain_value():
     """ Returns the last value of the current blockchain. """
@@ -112,7 +117,8 @@ while waiting_for_input:
         add_transaction(recipient, amount=amount)
         print(open_transactions)
     elif user_choice == '2':
-         mine_block()
+        if  mine_block():
+            open_transactions=[]
     elif user_choice == '3':
         print_blockchain_elements()
     elif user_choice == '4':
@@ -136,6 +142,7 @@ while waiting_for_input:
         print('Invalid blockchain!')
         # Break out of the loop
         break
+    print(get_balance('Max'))
 else:
     print('User left!')
 
