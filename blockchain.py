@@ -8,6 +8,8 @@ blockchain = [genesis_block]
 open_transactions = []
 owner = 'Max'
 
+def hash_block(block):
+    return "-".join([str(block[key]) for key in block])
 
 def get_last_blockchain_value():
     """ Returns the last value of the current blockchain. """
@@ -38,11 +40,12 @@ def add_transaction(recipient, sender=owner, amount=1.0):
 
 def mine_block():
     last_block = blockchain[-1]
-    hash_blocked = ''
+    hash_blocked = hash_block(last_block)
+    """
     for key in last_block:
         value=last_block[key]
         hash_blocked = hash_blocked + str(value)
-    print(hash_blocked)
+    """
 
     block = {
         'previous_hash':hash_blocked,
@@ -78,29 +81,11 @@ def print_blockchain_elements():
 
 def verify_chain():
     """ Verify the current blockchain and return True if it's valid, False otherwise."""
-    # block_index = 0
-    is_valid = True
-    for block_index in range(len(blockchain)):
-        if block_index == 0:
-            # If we're checking the first block, we should skip the iteration (since there's no previous block)
+    for(index, block) in enumerate(blockchain):
+        if index==0:
             continue
-        # Check the previous block (the entire one) vs the first element of the current block
-        elif blockchain[block_index][0] == blockchain[block_index - 1]:
-            is_valid = True
-        else:
-            is_valid = False
-    #         break
-    # for block in blockchain:
-    #     if block_index == 0:
-    #         block_index += 1
-    #         continue
-    #     elif block[0] == blockchain[block_index - 1]:
-    #         is_valid = True
-    #     else:
-    #         is_valid = False
-    #         break
-    #     block_index += 1
-    return is_valid
+
+
 
 
 waiting_for_input = True
