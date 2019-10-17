@@ -15,7 +15,9 @@ def hash_block(block):
     return "-".join([str(block[key]) for key in block])
 
 def get_balance(participant):
-    tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender']==participant] for block in blockchain]
+    tx_sender = [[tx['amount'] for tx in block['transactions'] if  tx['sender']==participant] for block in blockchain]
+    open_tx_sender = [[tx['amount'] for tx in open_transactions if tx['sender']==participant] for block in blockchain]
+    tx_sender.append(open_tx_sender)
     amount_sent = 0
     for tx in tx_sender:
         if len(tx) > 0:
@@ -132,7 +134,10 @@ while waiting_for_input:
         tx_data = get_transaction_value()
         recipient, amount = tx_data
         # Add the transaction amount to the blockchain
-        add_transaction(recipient, amount=amount)
+        if add_transaction(recipient, amount=amount):
+            print("Added transaction!")
+        else:
+            print('transaction failed')
         print(open_transactions)
     elif user_choice == '2':
         if  mine_block():
